@@ -9,6 +9,7 @@ namespace PrecipointChallenge.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        // Update the user on its current state
         private string _message;
         public string Message
         {
@@ -16,10 +17,14 @@ namespace PrecipointChallenge.ViewModel
             set
             {
                 if (_message != value)
+                {
                     _message = value;
+                    RaisePropertyChanged("Message");
+                }
             }
         }
 
+        // Images uploaded by the user
         private ObservableCollection<M8Image> _imageList;
         public ObservableCollection<M8Image> ImageList
         {
@@ -27,12 +32,17 @@ namespace PrecipointChallenge.ViewModel
             set
             {
                 if (_imageList != value)
+                {
                     _imageList = value;
+                    RaisePropertyChanged("ImageList");
+                }
             }
         }
 
+        // Linked to the "Load your pictures" button
         public RelayCommand UploadCommand { get; private set; }
 
+        // Initializing variables
         public MainViewModel()
         {
             this.Message = "No images available";
@@ -40,11 +50,12 @@ namespace PrecipointChallenge.ViewModel
             this.UploadCommand = new RelayCommand(this.UploadCommandMethod);
         }
 
+        // Allow the user to pic several pictures
         public void UploadCommandMethod()
         {
             var dialog = new OpenFileDialog { InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory };
             dialog.DefaultExt = ".png";
-            dialog.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|Images (*.jpeg;*.png;*.jpg)|*.jpeg;*.png;*.jpg";
+            dialog.Filter = "Images (*.jpeg;*.png;*.jpg)|*.jpeg;*.png;*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg";
             dialog.Multiselect = true;
             dialog.Title = "Select your images";
             DialogResult dr = dialog.ShowDialog();
@@ -63,7 +74,7 @@ namespace PrecipointChallenge.ViewModel
             }
         }
 
-        // threads?
+        // Tell to the user which is the sharpest picture and where it is plced in the list
         public void CalculateSharpness()
         {
             foreach (M8Image img in this.ImageList)

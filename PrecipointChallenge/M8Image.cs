@@ -11,6 +11,7 @@ namespace PrecipointChallenge
 {
     public class M8Image
     {
+        // Name of the picture
         private string _name;
         public string Name
         {
@@ -22,6 +23,7 @@ namespace PrecipointChallenge
             }
         }
 
+        // The picture
         private Mat _savedImage;
         public Mat SavedImage
         {
@@ -32,7 +34,8 @@ namespace PrecipointChallenge
                     _savedImage = value;
             }
         }
-
+        
+        //
         private double _sharpness;
         public double Sharpness
         {
@@ -44,6 +47,7 @@ namespace PrecipointChallenge
             }
         }
 
+        // Placement of the picture in the stack
         private int _place;
         public int Place
         {
@@ -57,22 +61,26 @@ namespace PrecipointChallenge
 
         public M8Image(string name, int place)
         {
-            this.Name = Path.GetFileNameWithoutExtension(name);
+            // Save the picture in grayscale because the sharpness is then esier to calculate
             this.SavedImage = new Mat(name, ImreadModes.Grayscale);
             this.Place = place;
             this.Sharpness = -1;
+            this.Name = Path.GetFileNameWithoutExtension(name);
         }
 
+        // Calculate the sharpness of the image
         public void SetSharpness()
         {
             Mat dx = new Mat();
             Mat dy = new Mat();
+            // get the horizontal edges
             Cv2.Sobel(this.SavedImage, dx, MatType.CV_32F, 1, 0, 3);
+            // get the vertical edges
             Cv2.Sobel(this.SavedImage, dy, MatType.CV_32F, 0, 1, 3);
+            // calculate their magnitudes
             Cv2.Magnitude(dx, dy, dx);
+            // add every magnitudes
             this.Sharpness = Cv2.Sum(dx)[0];
-            //Cv2.Laplacian(SavedImage, dest, MatType.CV_64F);
-            //
         }
     }
 }
