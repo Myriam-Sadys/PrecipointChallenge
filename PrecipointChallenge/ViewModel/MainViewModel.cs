@@ -53,6 +53,7 @@ namespace PrecipointChallenge.ViewModel
         // Allow the user to pic several pictures
         public void UploadCommandMethod()
         {
+            this.Message = "Calculating...";
             var dialog = new OpenFileDialog { InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory };
             dialog.DefaultExt = ".png";
             dialog.Filter = "Images (*.jpeg;*.png;*.jpg)|*.jpeg;*.png;*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg";
@@ -69,7 +70,6 @@ namespace PrecipointChallenge.ViewModel
                     this.ImageList.Add(m8Image);
                     i++;
                 }
-                this.Message = "Calculating...";
                 CalculateSharpness();
             }
         }
